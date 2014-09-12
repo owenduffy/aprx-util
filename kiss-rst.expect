@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+#script to escape from KISS mode
+
+#2014-08-30 Owen Duffy
+
+encoding system iso8859-1
+
+#comment the following line for no logging
+log_file /home/aprs/JAS/log/expect.log
+set line "\n***** "
+append line [timestamp -format "%Y-%m-%d %H:%M:%S" -gmt]
+append line " $argv0 starting...\n\n"
+send_log $line
+
+#set port /dev/ttyUSB0
+set port [lindex $argv 0]
+set spawned [spawn -open [open $port RDWR]]
+set baud 9600
+# -parenb means don't use a parity bit
+# -cstopb means "not 2 stop bits, but 1"
+# cs8 means 8 bits
+# -echo means no echo (full duplex?)
+stty ispeed $baud ospeed $baud raw -echo cs8 -parenb -cstopb -onlcr < $port
+
+send "\xc0\xff\xc0"
+send_log "\nAll done!\n"
+send_log "==========================================================\n"
+exit

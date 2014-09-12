@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo it is $1
+
+
+rm tnc-init tnc-rst 
+ln -s $1-init.expect tnc-init 
+ln -s $1-rst.expect tnc-rst
+
+
