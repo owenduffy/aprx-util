@@ -3,8 +3,7 @@
 
 encoding system iso8859-1
 
-#comment the following line for no logging
-log_file /home/aprs/JAS/log/expect.log
+source [file dirname [info script]]/log.expect
 set line "\n***** "
 append line [timestamp -format "%Y-%m-%d %H:%M:%S" -gmt]
 append line " $argv0 starting...\n\n"
@@ -21,7 +20,7 @@ set baud 9600
 stty ispeed $baud ospeed $baud raw -echo cs8 -parenb -cstopb -onlcr < $port
 
 set timeout 1
-send "\x03"
+send "\x03\r"
 after 2000
 #flush buffer
 expect -re $

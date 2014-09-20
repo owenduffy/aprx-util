@@ -5,8 +5,7 @@
 
 encoding system iso8859-1
 
-#comment the following line for no logging
-log_file /home/aprs/JAS/log/expect.log
+source [file dirname [info script]]/log.expect
 set line "\n***** "
 append line [timestamp -format "%Y-%m-%d %H:%M:%S" -gmt]
 append line " Init starting...\n\n"

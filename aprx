@@ -20,6 +20,8 @@ DAEMON=/usr/sbin/$NAME
 DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
+APPDIR=/home/aprs/aprx
+PORT=ttyUSB0
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
@@ -44,8 +46,15 @@ do_start()
         #   0 if daemon has been started
         #   1 if daemon was already running
         #   2 if daemon could not be started
+        #   3 if daemon could not be started
+        #   4 if daemon could not be started
+        [ -f $APPDIR/RUN ] || return 3
         start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
                 || return 1
+        #initialise TNC
+        if [ -f $APPDIR/tnc-init ]; then
+		 $APPDIR/tnc-init /dev/$PORT || return 3
+	fi
         start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
                 $DAEMON_ARGS \
                 || return 2
@@ -77,6 +86,10 @@ do_stop()
         [ "$?" = 2 ] && return 2
         # Many daemons don't delete their pidfiles when they exit.
         rm -f $PIDFILE
+        #reset TNC
+        if [ -f $APPDIR/tnc-init ]; then
+        	$APPDIR/tnc-rst /dev/$PORT || return 3
+	fi
         return "$RETVAL"
 }
 
