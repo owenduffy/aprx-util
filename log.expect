@@ -1,0 +1,3 @@
+#comment the following line for no logging
+log_file /var/log/aprx/tnc.log
+
