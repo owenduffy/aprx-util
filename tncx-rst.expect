@@ -1,0 +1,19 @@
+#!/usr/bin/expect
+
+#script to rst TNC-X TNC
+#2014-08-30 Owen Duffy
+
+encoding system iso8859-1
+
+source [file dirname [info script]]/log.expect
+set line "\n***** "
+append line [timestamp -format "%Y-%m-%d %H:%M:%S" -gmt]
+append line " $argv0 starting...\n\n"
+send_log $line
+
+send "\xc0\xff\xc0\0d"
+sleep 3
+send_log "\nAll done!\n"
+send_log "==========================================================\n"
+exit
+
