@@ -8,7 +8,7 @@ encoding system iso8859-1
 source [file dirname [info script]]/log.expect
 set line "\n***** "
 append line [timestamp -format "%Y-%m-%d %H:%M:%S" -gmt]
-append line " Init starting...\n\n"
+append line " $argv0 starting...\n\n"
 send_log $line
 
 #set port /dev/ttyUSB0
